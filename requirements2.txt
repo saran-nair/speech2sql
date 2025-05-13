@@ -1,0 +1,31 @@
+# Core scientific stack (compatible with numpy 1.x)
+numpy==1.26.4
+scipy==1.11.4
+pandas==2.1.4
+matplotlib==3.8.2
+scikit-learn==1.3.2
+
+# Transformers and NLP
+transformers==4.40.1
+sentence-transformers==2.6.1
+datasets==3.2.0
+fsspec==2023.1.0
+
+# PyTorch and vision
+torch==2.4.1
+torchvision==0.19.1
+
+# Bitsandbytes (from GitHub wheel — not on PyPI)
+# Install this manually:
+# pip install --no-deps https://github.com/bitsandbytes-foundation/bitsandbytes/releases/download/continuous-release_multi-backend-refactor/bitsandbytes-0.44.1.dev0-py3-none-win_amd64.whl
+
+# Optional: Streamlit app interface
+streamlit==1.30.0
+
+# Optional: Gensim dependency
+FuzzyTM==0.4.0
+gensim==4.3.0
+
+# Misc
+joblib==1.3.2
+threadpoolctl==3.2.0
