@@ -1,14 +1,15 @@
-import torch
-from sentence_transformers.util import cos_sim
+import chromadb
+from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
 
 class SchemaRetriever:
-    def __init__(self, embedder):
-        self.embedder = embedder
-        self.schema_chunks = embedder.get_schema_chunks()
-        self.chunk_embeddings = embedder.embed_chunks()
+    def __init__(self, schema_id: str):
+        chroma_client = chromadb.PersistentClient(path="app/db/chroma_store")
+        embedding_function = SentenceTransformerEmbeddingFunction("all-MiniLM-L6-v2")
+        self.collection = chroma_client.get_collection(
+            name=f"{schema_id}_schema",
+            embedding_function=embedding_function
+        )
 
-    def retrieve(self, query: str, top_k: int = 2):
-        query_embedding = self.embedder.model.encode(query, convert_to_tensor=True)
-        scores = cos_sim(query_embedding, self.chunk_embeddings)[0]
-        top_indices = torch.topk(scores, k=top_k).indices.tolist()
-        return [self.schema_chunks[i] for i in top_indices]
+    def retrieve(self, query: str, top_k=3):
+        results = self.collection.query(query_texts=[query], n_results=top_k)
+        return results["documents"][0], results["metadatas"][0]
